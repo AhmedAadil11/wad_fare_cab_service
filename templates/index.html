@@ -1,191 +1,271 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="author" content="Furqan Mushtaq">
+<meta name="description" content="Wadi Fare – check if your Kashmir taxi or ride quote is fair. Created by Furqan Mushtaq.">
 <title>Wadi Fare – Kashmir Cab Fare Predictor</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
-
 <style>
 :root{
-  --night:#0e2a3a; --lake:#1c6b86; --lake-l:#4fb0c6; --snow:#f4f8fa;
-  --saffron:#e8a33d; --chinar:#c4452d; --pine:#2f6b4f; --ink:#16303d;
-  --card:rgba(255,255,255,.92);
+  --bg:#eef4f6; --surface:#ffffff; --surface-2:#f5f9fb; --line:#d6e4ea;
+  --ink:#12303d; --muted:#5d7783; --night:#0b2533;
+  --lake:#1c6b86; --lake-l:#4fb0c6; --saffron:#e8a33d; --chinar:#c4452d; --pine:#2f8a5f;
+  --shadow:0 16px 44px rgba(11,37,51,.13);
+  --hero-a:#0b2533; --hero-b:#1c6b86;
+}
+[data-theme="dark"]{
+  --bg:#08151d; --surface:#10232e; --surface-2:#0c1c26; --line:#1f3a49;
+  --ink:#e6f1f5; --muted:#8fb0bd; --night:#e6f1f5;
+  --shadow:0 16px 44px rgba(0,0,0,.45);
+  --hero-a:#050f16; --hero-b:#134a60;
 }
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Poppins',sans-serif;color:var(--ink);background:var(--snow);min-height:100vh}
-.hero{
-  position:relative;height:430px;overflow:hidden;color:#fff;
-  background:linear-gradient(180deg,#1b4f6b 0%,#4fa3bd 45%,#f6d9a8 82%,#f3c987 100%);
-}
-.hero .sun{position:absolute;right:14%;top:150px;width:110px;height:110px;border-radius:50%;
-  background:radial-gradient(circle,#fff3cf 0%,#ffd78a 55%,rgba(255,215,138,0) 72%)}
-.hero svg.mount{position:absolute;bottom:0;left:0;width:100%;height:auto}
-.hero-content{position:relative;z-index:3;max-width:1100px;margin:0 auto;padding:46px 24px 0}
-.brand{display:flex;align-items:center;gap:10px;font-weight:500;letter-spacing:.5px;opacity:.95}
-.brand svg{width:28px;height:28px}
-h1{font-family:'Playfair Display',serif;font-size:clamp(34px,6vw,60px);line-height:1.1;margin-top:34px;text-shadow:0 3px 18px rgba(0,0,0,.25)}
+html{scroll-behavior:smooth}
+body{font-family:'Poppins',sans-serif;color:var(--ink);background:var(--bg);min-height:100vh;transition:background .3s,color .3s}
+
+/* ---------- Hero ---------- */
+.hero{position:relative;color:#fff;padding:26px 20px 120px;overflow:hidden;
+  background:radial-gradient(ellipse at 80% 0%,rgba(232,163,61,.28),transparent 55%),
+             linear-gradient(135deg,var(--hero-a),var(--hero-b))}
+.hero::before{content:"";position:absolute;inset:0;opacity:.35;
+  background-image:radial-gradient(#fff 1px,transparent 1.5px);background-size:46px 46px;
+  mask-image:linear-gradient(180deg,#000,transparent 70%);-webkit-mask-image:linear-gradient(180deg,#000,transparent 70%)}
+.nav{position:relative;z-index:2;max-width:980px;margin:0 auto;display:flex;justify-content:space-between;align-items:center}
+.logo{display:flex;align-items:center;gap:10px;font-weight:600;letter-spacing:3px;font-size:14px;color:#ffe0a1}
+.logo svg{width:26px;height:26px}
+.theme-btn{border:1px solid rgba(255,255,255,.35);background:rgba(255,255,255,.1);color:#fff;border-radius:40px;
+  padding:7px 14px;font:500 13px 'Poppins',sans-serif;cursor:pointer;backdrop-filter:blur(6px);transition:.2s}
+.theme-btn:hover{background:rgba(255,255,255,.2)}
+.hero-body{position:relative;z-index:2;max-width:980px;margin:38px auto 0}
+.pill{display:inline-block;font-size:12px;letter-spacing:1px;padding:6px 14px;border-radius:30px;
+  background:rgba(255,224,161,.15);border:1px solid rgba(255,224,161,.4);color:#ffe0a1}
+h1{font-family:'Playfair Display',serif;font-size:clamp(32px,6vw,54px);line-height:1.1;margin-top:18px}
 h1 span{color:#ffe0a1}
-.tag{margin-top:14px;max-width:520px;font-weight:300;font-size:17px;text-shadow:0 2px 10px rgba(0,0,0,.3)}
-.shikara{position:absolute;z-index:4;bottom:12px;left:-220px;width:190px;animation:sail 38s linear infinite}
-@keyframes sail{to{left:110%}}
-main{max-width:1100px;margin:-70px auto 60px;padding:0 20px;position:relative;z-index:5;
-  display:grid;grid-template-columns:1.55fr 1fr;gap:26px}
-@media(max-width:900px){main{grid-template-columns:1fr}}
-.card{background:var(--card);backdrop-filter:blur(8px);border-radius:22px;padding:30px;
-  box-shadow:0 18px 50px rgba(14,42,58,.18);border:1px solid rgba(255,255,255,.7)}
-.card h2{font-family:'Playfair Display',serif;font-size:24px;margin-bottom:4px;color:var(--night)}
-.card .sub{font-size:13.5px;color:#5b7480;margin-bottom:22px}
-fieldset{border:none;margin-bottom:18px}
-legend{font-size:12px;font-weight:600;letter-spacing:1.4px;text-transform:uppercase;color:var(--lake);
-  margin-bottom:10px;display:flex;align-items:center;gap:8px;width:100%}
-legend::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,#b9d3dc,transparent)}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-@media(max-width:560px){.grid{grid-template-columns:1fr}}
+.tag{margin-top:14px;max-width:520px;font-weight:300;font-size:16px;opacity:.92}
+.stats{display:flex;gap:26px;margin-top:26px;flex-wrap:wrap}
+.stats div{font-size:12.5px;opacity:.85}
+.stats b{display:block;font-family:'Playfair Display',serif;font-size:24px;color:#ffe0a1}
+.peaks{position:absolute;left:0;bottom:-1px;width:100%;height:auto;z-index:1}
+
+/* ---------- Layout ---------- */
+main{max-width:980px;margin:-70px auto 40px;padding:0 18px;display:grid;grid-template-columns:1.45fr 1fr;gap:22px;align-items:start;position:relative;z-index:3}
+@media(max-width:860px){main{grid-template-columns:1fr}}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:26px;box-shadow:var(--shadow);transition:background .3s}
+.card h2{font-family:'Playfair Display',serif;font-size:22px;color:var(--night);margin-bottom:4px}
+.sub{font-size:13px;color:var(--muted);margin-bottom:20px}
+
+/* ---------- Form ---------- */
+.section-title{font-size:11.5px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--lake-l);
+  margin:6px 0 12px;display:flex;align-items:center;gap:10px}
+.section-title::after{content:"";flex:1;height:1px;background:var(--line)}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:18px}
+@media(max-width:520px){.grid{grid-template-columns:1fr}}
 .field{display:flex;flex-direction:column;gap:5px}
-.field.full{grid-column:1/-1}
-label{font-size:13px;font-weight:500;color:#34515f}
-input,select{font:inherit;font-size:14.5px;padding:11px 13px;border-radius:11px;border:1.5px solid #cfe0e7;
-  background:#fff;color:var(--ink);transition:.2s;width:100%}
-input:focus,select:focus{outline:none;border-color:var(--lake-l);box-shadow:0 0 0 4px rgba(79,176,198,.2)}
-.switch{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:11px 13px;
-  border:1.5px solid #cfe0e7;border-radius:11px;background:#fff}
-.switch span{font-size:14px}
-.switch input{display:none}
-.switch .track{width:46px;height:26px;border-radius:20px;background:#c5d5dc;position:relative;cursor:pointer;transition:.25s;flex:none}
-.switch .track::after{content:"";position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;
-  background:#fff;transition:.25s;box-shadow:0 1px 4px rgba(0,0,0,.3)}
-.switch input:checked + .track{background:var(--pine)}
-.switch input:checked + .track::after{left:23px}
-button.go{width:100%;margin-top:8px;padding:15px;border:none;border-radius:14px;cursor:pointer;
-  font:600 16px 'Poppins',sans-serif;color:#fff;letter-spacing:.4px;
-  background:linear-gradient(135deg,var(--chinar),#e0793a);box-shadow:0 10px 24px rgba(196,69,45,.35);transition:.2s}
-button.go:hover{transform:translateY(-2px);box-shadow:0 14px 28px rgba(196,69,45,.42)}
+.full{grid-column:1/-1}
+label{font-size:12.5px;font-weight:500;color:var(--muted)}
+input,select{font:inherit;font-size:14.5px;padding:11px 12px;border-radius:11px;border:1.5px solid var(--line);
+  background:var(--surface-2);color:var(--ink);width:100%;transition:.2s}
+input:focus,select:focus{outline:none;border-color:var(--lake-l);box-shadow:0 0 0 4px rgba(79,176,198,.2);background:var(--surface)}
+#destSearch{font-size:13px;padding:8px 12px}
+.hint{font-size:11.5px;color:var(--muted)}
+.money{position:relative}
+.money span{position:absolute;left:13px;top:50%;transform:translateY(-50%);font-weight:600;color:var(--lake)}
+.money input{padding-left:30px;font-size:17px;font-weight:600}
+
+details{border:1.5px dashed var(--line);border-radius:13px;padding:0 14px;margin-bottom:6px}
+summary{cursor:pointer;padding:13px 0;font-size:13.5px;font-weight:500;color:var(--lake-l);list-style:none;display:flex;justify-content:space-between}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";font-size:19px;line-height:1}
+details[open] summary::after{content:"–"}
+details .grid{margin-bottom:0;padding-bottom:16px}
+.check{display:flex;align-items:center;gap:10px;font-size:13.5px;cursor:pointer;color:var(--ink)}
+.check input{width:18px;height:18px;accent-color:var(--pine)}
+
+.actions{display:flex;gap:10px;margin-top:18px}
+button.go{flex:1;padding:14px;border:none;border-radius:13px;cursor:pointer;font:600 15.5px 'Poppins',sans-serif;color:#fff;
+  background:linear-gradient(135deg,var(--chinar),#e0793a);box-shadow:0 10px 24px rgba(196,69,45,.32);transition:.2s}
+button.go:hover{transform:translateY(-2px);box-shadow:0 14px 28px rgba(196,69,45,.4)}
 button.go:disabled{opacity:.6;cursor:wait;transform:none}
-.side{display:flex;flex-direction:column;gap:22px}
-.result{min-height:300px}
-.placeholder{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;
-  height:250px;color:#6b8793;gap:10px}
-.placeholder svg{width:70px;opacity:.55}
-.verdict{display:none}
-.badge{display:inline-flex;align-items:center;gap:8px;padding:9px 18px;border-radius:40px;
-  font-weight:600;font-size:15px;margin-bottom:18px}
-.badge.good{background:#e1f3ea;color:var(--pine)}
-.badge.warn{background:#fff1d9;color:#a8710f}
-.badge.bad{background:#fde4df;color:var(--chinar)}
-.row{display:flex;justify-content:space-between;align-items:baseline;padding:11px 0;border-bottom:1px dashed #d5e3e9}
-.row small{color:#5b7480;font-size:13px}
-.row b{font-size:19px;color:var(--night)}
-.row.big b{font-size:26px;font-family:'Playfair Display',serif}
-.meter{margin-top:20px}
-.meter .bar{position:relative;height:14px;border-radius:10px;
-  background:linear-gradient(90deg,#4caf7d 0%,#4caf7d 45%,#e8a33d 70%,#c4452d 100%)}
-.meter .pin{position:absolute;top:-6px;width:4px;height:26px;background:var(--night);border-radius:3px;
-  transition:left .8s cubic-bezier(.2,.8,.2,1);left:0}
-.meter .pin::after{content:"Quote";position:absolute;top:-18px;left:50%;transform:translateX(-50%);
-  font-size:10px;font-weight:600;color:var(--night)}
-.meter .ends{display:flex;justify-content:space-between;font-size:11.5px;color:#5b7480;margin-top:9px}
-.tip{background:linear-gradient(135deg,#0e2a3a,#1c6b86);color:#e7f4f8;border-radius:22px;padding:24px;position:relative;overflow:hidden}
-.tip h3{font-family:'Playfair Display',serif;font-size:19px;margin-bottom:8px;color:#ffe0a1}
-.tip p{font-size:13.5px;line-height:1.6;font-weight:300}
-.tip svg{position:absolute;right:-16px;bottom:-16px;width:110px;opacity:.16}
-.err{display:none;margin-top:12px;color:var(--chinar);font-size:13.5px}
-footer{text-align:center;padding:0 20px 40px;color:#6b8793;font-size:13px}
-footer svg{width:100%;max-width:420px;height:26px;display:block;margin:0 auto 10px}
+button.ghost{padding:14px 18px;border-radius:13px;border:1.5px solid var(--line);background:transparent;color:var(--muted);
+  font:500 14px 'Poppins',sans-serif;cursor:pointer;transition:.2s}
+button.ghost:hover{border-color:var(--lake-l);color:var(--ink)}
+.err{display:none;margin-top:12px;padding:10px 13px;border-radius:10px;background:rgba(196,69,45,.12);color:var(--chinar);font-size:13.5px}
+
+/* ---------- Result ---------- */
+.placeholder{text-align:center;color:var(--muted);padding:46px 10px;font-size:14px}
+.placeholder b{display:block;font-size:40px;margin-bottom:10px}
+.verdict{display:none;animation:rise .5s ease}
+@keyframes rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.badge{display:inline-flex;gap:8px;align-items:center;padding:8px 16px;border-radius:40px;font-weight:600;font-size:14.5px;margin-bottom:12px}
+.badge.good{background:rgba(47,138,95,.15);color:var(--pine)}
+.badge.warn{background:rgba(232,163,61,.18);color:#c98512}
+.badge.bad{background:rgba(196,69,45,.15);color:var(--chinar)}
+.diff{font-size:13.5px;margin-bottom:14px;font-weight:500}
+.diff.good{color:var(--pine)} .diff.warn{color:#c98512} .diff.bad{color:var(--chinar)}
+.row{display:flex;justify-content:space-between;align-items:baseline;padding:11px 0;border-bottom:1px dashed var(--line)}
+.row small{color:var(--muted);font-size:13px}
+.row b{font-size:17px;color:var(--night)}
+.row.big b{font-size:28px;font-family:'Playfair Display',serif}
+.meter{margin-top:30px}
+.bar{position:relative;height:12px;border-radius:10px;background:linear-gradient(90deg,#3fae78 0%,#3fae78 45%,#e8a33d 70%,#c4452d 100%)}
+.pin{position:absolute;top:-6px;width:4px;height:24px;background:var(--night);border-radius:3px;left:0;transition:left .9s cubic-bezier(.2,.8,.2,1)}
+.pin::after{content:"Quote";position:absolute;top:-19px;left:50%;transform:translateX(-50%);font-size:10px;font-weight:600;color:var(--night)}
+.ends{display:flex;justify-content:space-between;font-size:11.5px;color:var(--muted);margin-top:8px}
+.advice{margin-top:18px;padding:13px 15px;border-radius:13px;background:var(--surface-2);border-left:4px solid var(--lake-l);font-size:13.5px;line-height:1.55}
+.share{display:none;margin-top:14px;width:100%;padding:12px;border-radius:12px;border:none;cursor:pointer;
+  background:#1fa855;color:#fff;font:600 14px 'Poppins',sans-serif;transition:.2s}
+.share:hover{background:#188a46}
+
+.tip{margin-top:22px;border-radius:20px;padding:22px;color:#e7f4f8;background:linear-gradient(135deg,#0b2533,#1c6b86)}
+.tip h3{font-family:'Playfair Display',serif;font-size:18px;color:#ffe0a1;margin-bottom:6px}
+.tip p{font-size:13.2px;line-height:1.6;font-weight:300}
+
+/* ---------- Footer ---------- */
+footer{text-align:center;padding:10px 20px 40px;color:var(--muted);font-size:13px;line-height:1.8}
+footer .by{font-size:14px;color:var(--ink)}
+footer .by b{font-family:'Playfair Display',serif;color:var(--chinar);font-size:16px}
 </style>
 </head>
 
 <body>
 
 <header class="hero">
-  <div class="sun"></div>
-  <div class="hero-content">
-    <div class="brand">
+  <div class="nav">
+    <div class="logo">
       <svg viewBox="0 0 64 64" fill="#ffe0a1"><path d="M32 4l5 12 12-4-3 12 13 2-9 9 8 10-13-1 1 13-10-8-10 8 1-13-13 1 8-10-9-9 13-2-3-12 12 4z"/></svg>
       WADI FARE
     </div>
-    <h1>Kashmir ki <span>sahi fare</span>,<br>pehle se jaano.</h1>
-    <p class="tag">Gulmarg se Pahalgam tak — taxi ya ride ka quote fair hai ya tourist-trap? Check karo, phir baat karo.</p>
+    <button class="theme-btn" id="themeBtn" type="button">🌙 Dark</button>
   </div>
 
-  <svg class="shikara" viewBox="0 0 200 60">
-    <path d="M5 34 Q100 52 195 30 Q150 44 100 44 Q50 44 5 34z" fill="#8a3b2a"/>
-    <path d="M45 34 L60 14 L140 14 L152 33z" fill="#e8a33d"/>
-    <path d="M55 20 H145" stroke="#c4452d" stroke-width="4"/>
-    <path d="M0 50 Q50 44 100 50 T200 50" stroke="rgba(255,255,255,.5)" fill="none" stroke-width="2"/>
-  </svg>
+  <div class="hero-body">
+    <span class="pill">Smart fare checker · Kashmir</span>
+    <h1>Kashmir ki <span>sahi fare</span>,<br>pehle se jaano.</h1>
+    <p class="tag">Taxi, pony ya shikara — quote fair hai ya tourist-trap? Check karo, phir baat karo.</p>
+    <div class="stats">
+      <div><b>16</b>Origin hubs</div>
+      <div><b>134</b>Destinations</div>
+      <div><b>11</b>Ride types</div>
+    </div>
+  </div>
 
-  <svg class="mount" viewBox="0 0 1440 260" preserveAspectRatio="none">
-    <path d="M0 200 L120 120 L200 170 L340 40 L470 160 L560 110 L700 190 L820 70 L960 180 L1080 100 L1220 170 L1340 90 L1440 160 V260 H0z" fill="#8fb4c4" opacity=".75"/>
-    <path d="M340 40 L300 90 L330 84 L350 100 L372 82 L395 92z" fill="#fff" opacity=".95"/>
-    <path d="M820 70 L780 118 L808 112 L830 126 L850 110 L872 120z" fill="#fff" opacity=".95"/>
-    <path d="M0 220 L150 150 L260 200 L420 120 L560 210 L700 140 L860 215 L1000 150 L1150 210 L1300 140 L1440 200 V260 H0z" fill="#2f6b4f"/>
-    <path d="M0 245 Q360 205 720 235 T1440 225 V260 H0z" fill="#1c6b86"/>
-    <g fill="#1d4a36">
-      <path d="M60 235 l14 -52 l14 52z M200 238 l12 -44 l12 44z M1180 236 l14 -50 l14 50z M1320 238 l12 -44 l12 44z"/>
-    </g>
+  <svg class="peaks" viewBox="0 0 1440 140" preserveAspectRatio="none">
+    <path d="M0 140V90L120 50 220 85 360 20 480 80 600 45 740 95 880 30 1020 85 1160 40 1300 80 1440 55V140z" fill="var(--bg)" opacity=".35"/>
+    <path d="M0 140V110L160 75 300 105 460 60 620 108 780 70 940 110 1100 72 1260 108 1440 80V140z" fill="var(--bg)"/>
   </svg>
 </header>
 
 <main>
   <section class="card">
-    <h2>Trip details bharo</h2>
+    <h2>Trip details</h2>
     <p class="sub">Jitni accurate details, utni accurate prediction.</p>
 
     <form id="fareForm" action="" method="POST">
+      <!-- District is derived from the origin hub and sent to the backend -->
+      <input type="hidden" id="district" name="district" value="Anantnag (Pahalgam)">
+      <!-- Distance is calculated automatically from origin -> destination -->
+      <input type="hidden" id="route_distance_km" name="route_distance_km" value="">
 
-      <fieldset>
-        <legend>Route</legend>
-        <div class="grid">
+      <div class="section-title">Route</div>
+      <div class="grid">
+        <div class="field">
+          <label for="origin_hub">From (origin hub)</label>
+          <select id="origin_hub" name="origin_hub" required>
+            <option value="Pahalgam_Main_Taxi_Stand">Pahalgam Main Taxi Stand</option>
+            <option value="Srinagar_TRC_Tourist_Taxi_Stand">Srinagar TRC Tourist Taxi Stand</option>
+            <option value="Sonamarg_Forest_Checkpost_Stand">Sonamarg Forest Checkpost Stand</option>
+            <option value="Gulmarg_Main_Market_Stand">Gulmarg Main Market Stand</option>
+            <option value="Pahalgam_Pony_Stand_KP_Road">Pahalgam Pony Stand KP Road</option>
+            <option value="Tangmarg_Winter_Terminal">Tangmarg Winter Terminal</option>
+            <option value="Dal_Lake_Boulevard_Ghat_1_to_16">Dal Lake Boulevard Ghat 1 to 16</option>
+            <option value="Gulmarg_Gondola_Base_Bowl">Gulmarg Gondola Base Bowl</option>
+            <option value="Bandipora_Gurez_Sumo_Stand">Bandipora Gurez Sumo Stand</option>
+            <option value="Anantnag_Daksum_Taxi_Stand">Anantnag Daksum Taxi Stand</option>
+            <option value="Sonamarg_Pony_Stand_Meadow">Sonamarg Pony Stand Meadow</option>
+            <option value="Kongdori_Phase1_Snow_Bowl">Kongdori Phase1 Snow Bowl</option>
+            <option value="Nigeen_Lake_Club_Ghat">Nigeen Lake Club Ghat</option>
+            <option value="Sonamarg_Snow_Bridge_Point">Sonamarg Snow Bridge Point</option>
+            <option value="Yusmarg_Main_Bowl_Stand">Yusmarg Main Bowl Stand</option>
+            <option value="Doodhpathri_Tangnar_Pony_Stand">Doodhpathri Tangnar Pony Stand</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="destination_spot">To (destination)</label>
+          <input type="search" id="destSearch" placeholder="🔍 Search… Zojila, Gondola, Shikara">
+          <select id="destination_spot" name="destination_spot" required></select>
+          <span class="hint" id="destCount"></span>
+        </div>
+
+        <div class="field full">
+          <span class="hint">📍 Distance origin se destination tak road route se automatic calculate hoti hai.</span>
+        </div>
+
+        <div class="field">
+          <label for="season_name">Season</label>
+          <select id="season_name" name="season_name" required>
+            <option value="Peak_Summer_May_Jun">☀️ Peak Summer (May–Jun)</option>
+            <option value="Snow_Winter_Dec_Feb">❄️ Snow Winter (Dec–Feb)</option>
+            <option value="Chinar_Autumn_Sep_Nov">🍁 Chinar Autumn (Sep–Nov)</option>
+            <option value="Monsoon_Jul_Aug">🌧️ Monsoon (Jul–Aug)</option>
+            <option value="Tulip_Spring_Mar_Apr">🌷 Tulip Spring (Mar–Apr)</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="section-title">Ride &amp; group</div>
+      <div class="grid">
+        <div class="field">
+          <label for="vehicle_or_ride_type">Vehicle / ride</label>
+          <select id="vehicle_or_ride_type" name="vehicle_or_ride_type" required>
+            <option value="Pony_Ride_Roundtrip">Pony Ride Roundtrip</option>
+            <option value="Innova_Crysta_SUV">Innova Crysta SUV</option>
+            <option value="Maruti_Eeco_Van">Maruti Eeco Van</option>
+            <option value="Tempo_Traveller_14S">Tempo Traveller 14S</option>
+            <option value="Etios_Dzire_Sedan" selected>Etios Dzire Sedan</option>
+            <option value="Snow_Sledge_Ride">Snow Sledge Ride</option>
+            <option value="Shikara_Full_Lake_Cruise">Shikara Full Lake Cruise</option>
+            <option value="Snowmobile_Ride">Snowmobile Ride</option>
+            <option value="ATV_Quad_Bike">ATV Quad Bike</option>
+            <option value="Shikara_1Hr_Standard">Shikara 1Hr Standard</option>
+            <option value="Snow_Chain_4x4_Cab">Snow Chain 4x4 Cab</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="group_size">Group size</label>
+          <input type="number" min="1" id="group_size" name="group_size" value="4" required>
+        </div>
+      </div>
+
+      <div class="section-title">Jo quote mila</div>
+      <div class="field" style="margin-bottom:18px">
+        <label for="quoted_total_fare_inr">Quoted total fare</label>
+        <div class="money"><span>₹</span>
+          <input type="number" min="0" id="quoted_total_fare_inr" name="quoted_total_fare_inr" placeholder="4500" required>
+        </div>
+      </div>
+
+      <div class="section-title">Trip specifics</div>
+      <div class="grid">
           <div class="field">
-            <label for="origin_hub">Origin hub</label>
-            <select id="origin_hub" name="origin_hub" required>
-              <option value="Pahalgam_Main_Taxi_Stand">Pahalgam Main Taxi Stand</option>
-              <option value="Srinagar_TRC_Tourist_Taxi_Stand">Srinagar TRC Tourist Taxi Stand</option>
-              <option value="Sonamarg_Forest_Checkpost_Stand">Sonamarg Forest Checkpost Stand</option>
-              <option value="Gulmarg_Main_Market_Stand">Gulmarg Main Market Stand</option>
-              <option value="Pahalgam_Pony_Stand_KP_Road">Pahalgam Pony Stand KP Road</option>
-              <option value="Tangmarg_Winter_Terminal">Tangmarg Winter Terminal</option>
-              <option value="Dal_Lake_Boulevard_Ghat_1_to_16">Dal Lake Boulevard Ghat 1 to 16</option>
-              <option value="Gulmarg_Gondola_Base_Bowl">Gulmarg Gondola Base Bowl</option>
-              <option value="Bandipora_Gurez_Sumo_Stand">Bandipora Gurez Sumo Stand</option>
-              <option value="Anantnag_Daksum_Taxi_Stand">Anantnag Daksum Taxi Stand</option>
-              <option value="Sonamarg_Pony_Stand_Meadow">Sonamarg Pony Stand Meadow</option>
-              <option value="Kongdori_Phase1_Snow_Bowl">Kongdori Phase1 Snow Bowl</option>
-              <option value="Nigeen_Lake_Club_Ghat">Nigeen Lake Club Ghat</option>
-              <option value="Sonamarg_Snow_Bridge_Point">Sonamarg Snow Bridge Point</option>
-              <option value="Yusmarg_Main_Bowl_Stand">Yusmarg Main Bowl Stand</option>
-              <option value="Doodhpathri_Tangnar_Pony_Stand">Doodhpathri Tangnar Pony Stand</option>
+            <label for="booking_channel">Booking channel *</label>
+            <select id="booking_channel" name="booking_channel" required>
+              <option value="" disabled selected>Select booking channel</option>
+              <option value="Direct_Spot_Negotiation">Direct Spot Negotiation</option>
+              <option value="Official_Prepaid_Union_Booth">Official Prepaid Union Booth</option>
+              <option value="Hotel_Travel_Desk_Agent">Hotel Travel Desk Agent</option>
+              <option value="Street_Tout_Middleman">Street Tout Middleman</option>
             </select>
           </div>
-
           <div class="field">
-            <label for="destination_spot">Destination spot <span style="font-weight:400;color:#6b8793">(134 options)</span></label>
-            <input type="search" id="destSearch" placeholder="Search… e.g. Zojila, Gondola, Shikara" style="padding:9px 13px;font-size:13.5px">
-            <select id="destination_spot" name="destination_spot" required></select>
-          </div>
-
-          <div class="field">
-            <label for="district">District</label>
-            <select id="district" name="district" required>
-              <option value="Anantnag (Pahalgam)">Anantnag (Pahalgam)</option>
-              <option value="Baramulla (Gulmarg)">Baramulla (Gulmarg)</option>
-              <option value="Ganderbal (Sonamarg)">Ganderbal (Sonamarg)</option>
-              <option value="Srinagar">Srinagar</option>
-              <option value="Budgam (Doodhpathri & Yusmarg)">Budgam (Doodhpathri & Yusmarg)</option>
-              <option value="Bandipora (Gurez Valley)">Bandipora (Gurez Valley)</option>
-            </select>
-          </div>
-
-          <div class="field">
-            <label for="route_distance_km">Route distance (km)</label>
-            <input type="number" step="0.1" min="0" id="route_distance_km" name="route_distance_km" placeholder="e.g. 52" required>
-          </div>
-
-          <div class="field">
-            <label for="terrain_difficulty">Terrain difficulty</label>
+            <label for="terrain_difficulty">Terrain *</label>
             <select id="terrain_difficulty" name="terrain_difficulty" required>
+              <option value="" disabled selected>Select terrain</option>
               <option value="Steep_Mountain_Road">Steep Mountain Road</option>
               <option value="Unpaved_Pony_Bridle_Track">Unpaved Pony Bridle Track</option>
               <option value="High_Altitude_Glacier_Pass">High Altitude Glacier Pass</option>
@@ -193,119 +273,57 @@ footer svg{width:100%;max-width:420px;height:26px;display:block;margin:0 auto 10
               <option value="Flat_Lake_or_Highway">Flat Lake or Highway</option>
             </select>
           </div>
-
           <div class="field">
-            <label for="season_name">Season</label>
-            <select id="season_name" name="season_name" required>
-              <option value="Peak_Summer_May_Jun">Peak Summer May Jun</option>
-              <option value="Snow_Winter_Dec_Feb">Snow Winter Dec Feb</option>
-              <option value="Chinar_Autumn_Sep_Nov">Chinar Autumn Sep Nov</option>
-              <option value="Monsoon_Jul_Aug">Monsoon Jul Aug</option>
-              <option value="Tulip_Spring_Mar_Apr">Tulip Spring Mar Apr</option>
-            </select>
-          </div>
-        </div>
-      </fieldset>
-
-      <fieldset>
-        <legend>Ride &amp; group</legend>
-        <div class="grid">
-          <div class="field">
-            <label for="vehicle_or_ride_type">Vehicle / ride type</label>
-            <select id="vehicle_or_ride_type" name="vehicle_or_ride_type" required>
-              <option value="Pony_Ride_Roundtrip">Pony Ride Roundtrip</option>
-              <option value="Innova_Crysta_SUV">Innova Crysta SUV</option>
-              <option value="Maruti_Eeco_Van">Maruti Eeco Van</option>
-              <option value="Tempo_Traveller_14S">Tempo Traveller 14S</option>
-              <option value="Etios_Dzire_Sedan">Etios Dzire Sedan</option>
-              <option value="Snow_Sledge_Ride">Snow Sledge Ride</option>
-              <option value="Shikara_Full_Lake_Cruise">Shikara Full Lake Cruise</option>
-              <option value="Snowmobile_Ride">Snowmobile Ride</option>
-              <option value="ATV_Quad_Bike">ATV Quad Bike</option>
-              <option value="Shikara_1Hr_Standard">Shikara 1Hr Standard</option>
-              <option value="Snow_Chain_4x4_Cab">Snow Chain 4x4 Cab</option>
-            </select>
-          </div>
-
-          <div class="field">
-            <label for="booking_channel">Booking channel</label>
-            <select id="booking_channel" name="booking_channel" required>
-              <option value="Official_Prepaid_Union_Booth">Official Prepaid Union Booth</option>
-              <option value="Direct_Spot_Negotiation">Direct Spot Negotiation</option>
-              <option value="Hotel_Travel_Desk_Agent">Hotel Travel Desk Agent</option>
-              <option value="Street_Tout_Middleman">Street Tout Middleman</option>
-            </select>
-          </div>
-
-          <div class="field">
-            <label for="group_size">Group size</label>
-            <input type="number" min="1" id="group_size" name="group_size" value="4" required>
-          </div>
-
-          <div class="field">
-            <label for="units_hired">Units hired</label>
-            <input type="number" min="1" id="units_hired" name="units_hired" value="1" required>
-          </div>
-
-          <div class="field">
-            <label for="trip_duration_hours">Trip duration (hours)</label>
+            <label for="trip_duration_hours">Trip duration (hrs) *</label>
             <input type="number" step="0.5" min="0" id="trip_duration_hours" name="trip_duration_hours" placeholder="e.g. 8" required>
           </div>
-
           <div class="field">
-            <label for="extra_waiting_hours">Extra waiting (hours)</label>
+            <label for="extra_waiting_hours">Extra waiting (hrs) *</label>
             <input type="number" step="0.5" min="0" id="extra_waiting_hours" name="extra_waiting_hours" value="0" required>
           </div>
-
-          <div class="field full">
-            <div class="switch">
-              <span>Outside cabs restricted at destination?</span>
-              <label style="display:flex">
-                <input type="checkbox" id="outside_cabs_restricted" name="outside_cabs_restricted" value="1">
-                <span class="track"></span>
-              </label>
-            </div>
+          <div class="field">
+            <label for="units_hired">Units hired *</label>
+            <input type="number" min="1" id="units_hired" name="units_hired" value="1" required>
           </div>
-        </div>
-      </fieldset>
+          <div class="field" style="justify-content:flex-end">
+            <label class="check">
+              <input type="checkbox" id="outside_cabs_restricted" name="outside_cabs_restricted" value="1">
+              Outside cabs restricted at destination
+            </label>
+          </div>
+      </div>
 
-      <fieldset>
-        <legend>Jo quote mila</legend>
-        <div class="field">
-          <label for="quoted_total_fare_inr">Quoted total fare (₹)</label>
-          <input type="number" min="0" id="quoted_total_fare_inr" name="quoted_total_fare_inr" placeholder="e.g. 4500" required>
-        </div>
-      </fieldset>
-
-      <button class="go" id="submitBtn" type="submit">Fare Check Karo →</button>
+      <div class="actions">
+        <button class="go" id="submitBtn" type="submit">Fare Check Karo →</button>
+        <button class="ghost" id="resetBtn" type="button">Reset</button>
+      </div>
       <p class="err" id="err"></p>
     </form>
   </section>
 
-  <aside class="side">
-    <section class="card result">
+  <aside>
+    <section class="card">
       <h2>Prediction</h2>
       <p class="sub">Model ka verdict yahan dikhega.</p>
 
       <div class="placeholder" id="placeholder">
-        <svg viewBox="0 0 64 64" fill="none" stroke="#1c6b86" stroke-width="2.5" stroke-linejoin="round">
-          <path d="M4 52 L22 22 L32 38 L42 26 L60 52z"/>
-          <path d="M22 22 l-5 8 l5 -2 l4 3"/>
-          <circle cx="48" cy="12" r="5"/>
-        </svg>
-        <span>Form bharo aur “Fare Check Karo” dabao</span>
+        <b>🏔️</b>
+        Form bharo aur “Fare Check Karo” dabao
       </div>
 
       <div class="verdict" id="verdict">
         <div class="badge" id="badge"></div>
-        <div class="row big"><small>Official fair price</small><b id="rFair">–</b></div>
-        <div class="row"><small>Max reasonable (seasonal)</small><b id="rMax">–</b></div>
+        <div class="diff" id="diff"></div>
+        <div class="row big"><small>Fair price</small><b id="rFair">–</b></div>
+        <div class="row"><small>Max reasonable</small><b id="rMax">–</b></div>
         <div class="row"><small>Your quote</small><b id="rQuote">–</b></div>
         <div class="row"><small>Per person</small><b id="rPP">–</b></div>
         <div class="meter">
           <div class="bar"><div class="pin" id="pin"></div></div>
           <div class="ends"><span>Sasta</span><span>Fair zone</span><span>Zyada</span></div>
         </div>
+        <div class="advice" id="advice"></div>
+        <button class="share" id="shareBtn" type="button">Share on WhatsApp</button>
       </div>
 
       <div id="server-results" hidden>
@@ -321,18 +339,14 @@ footer svg{width:100%;max-width:420px;height:26px;display:block;margin:0 auto 10
     <section class="tip">
       <h3>Local tip</h3>
       <p>Gulmarg, Pahalgam jaise spots par aksar local union ke fixed rates hote hain. Baat karne se pehle rate-card maango aur mol-bhaav ke liye is prediction ko reference banao.</p>
-      <svg viewBox="0 0 64 64" fill="#fff">
-        <path d="M32 4l5 12 12-4-3 12 13 2-9 9 8 10-13-1 1 13-10-8-10 8 1-13-13 1 8-10-9-9 13-2-3-12 12 4z"/>
-      </svg>
     </section>
   </aside>
 </main>
 
 <footer>
-  <svg viewBox="0 0 420 26" preserveAspectRatio="none">
-    <path d="M0 26 L40 8 L70 20 L120 2 L170 22 L220 6 L270 22 L320 4 L370 20 L420 10 V26z" fill="#b9d3dc"/>
-  </svg>
-  Made with ♥ for Kashmir tourism · Predictions are estimates, not official tariffs.
+  <div class="by">Created with ♥ by <b>Furqan Mushtaq</b></div>
+  <div>Made for Kashmir tourism · Predictions are estimates, not official tariffs.</div>
+  <div>© <span id="yr"></span> Wadi Fare</div>
 </footer>
 
 <script>
@@ -474,39 +488,252 @@ const destinations = [
   'Zero_Point_Zojila_Pass_Return_Expedition_Standard_Return'
 ];
 
-// Populate destination dropdown and its search.
-const destinationSelect = document.getElementById('destination_spot');
-
-destinations.forEach(value => {
-  const option = document.createElement('option');
-  option.value = value;
-  option.textContent = value.replace(/_/g, ' ');
-  destinationSelect.appendChild(option);
-});
-
-const form = document.getElementById('fareForm');
-const btn = document.getElementById('submitBtn');
-const err = document.getElementById('err');
+const $ = id => document.getElementById(id);
+const pretty = v => v.replace(/_/g, ' ');
 const inr = n => '₹' + Math.round(Number(n)).toLocaleString('en-IN');
+$('yr').textContent = new Date().getFullYear();
 
-form.addEventListener('submit', () => {
+/* ---------- Theme ---------- */
+(function theme() {
+  const root = document.documentElement, btn = $('themeBtn');
+  let saved = null;
+  try { saved = localStorage.getItem('wf-theme'); } catch (e) {}
+  const start = saved || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+  const apply = t => {
+    root.setAttribute('data-theme', t);
+    btn.textContent = t === 'dark' ? '☀️ Light' : '🌙 Dark';
+  };
+  apply(start);
+  btn.addEventListener('click', () => {
+    const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    apply(next);
+    try { localStorage.setItem('wf-theme', next); } catch (e) {}
+  });
+})();
+
+/* ---------- District from origin hub (hidden field) ---------- */
+const hubDistrict = {
+  Pahalgam_Main_Taxi_Stand: 'Anantnag (Pahalgam)',
+  Pahalgam_Pony_Stand_KP_Road: 'Anantnag (Pahalgam)',
+  Anantnag_Daksum_Taxi_Stand: 'Anantnag (Pahalgam)',
+  Srinagar_TRC_Tourist_Taxi_Stand: 'Srinagar',
+  Dal_Lake_Boulevard_Ghat_1_to_16: 'Srinagar',
+  Nigeen_Lake_Club_Ghat: 'Srinagar',
+  Sonamarg_Forest_Checkpost_Stand: 'Ganderbal (Sonamarg)',
+  Sonamarg_Pony_Stand_Meadow: 'Ganderbal (Sonamarg)',
+  Sonamarg_Snow_Bridge_Point: 'Ganderbal (Sonamarg)',
+  Gulmarg_Main_Market_Stand: 'Baramulla (Gulmarg)',
+  Gulmarg_Gondola_Base_Bowl: 'Baramulla (Gulmarg)',
+  Tangmarg_Winter_Terminal: 'Baramulla (Gulmarg)',
+  Kongdori_Phase1_Snow_Bowl: 'Baramulla (Gulmarg)',
+  Bandipora_Gurez_Sumo_Stand: 'Bandipora (Gurez Valley)',
+  Yusmarg_Main_Bowl_Stand: 'Budgam (Doodhpathri & Yusmarg)',
+  Doodhpathri_Tangnar_Pony_Stand: 'Budgam (Doodhpathri & Yusmarg)'
+};
+const hubSelect = $('origin_hub'), districtInput = $('district');
+const syncDistrict = () => { districtInput.value = hubDistrict[hubSelect.value] || 'Srinagar'; };
+hubSelect.addEventListener('change', syncDistrict);
+
+/* ---------- Destination dropdown + search ---------- */
+const destSelect = $('destination_spot'), destBox = $('destSearch'), destCount = $('destCount');
+function fillDestinations(query, keep) {
+  const q = (query || '').trim().toLowerCase().replace(/_/g, ' ');
+  destSelect.innerHTML = '';
+  const list = destinations.filter(v => !q || pretty(v).toLowerCase().includes(q));
+  list.forEach(v => {
+    const o = document.createElement('option');
+    o.value = v; o.textContent = pretty(v);
+    if (v === keep) o.selected = true;
+    destSelect.appendChild(o);
+  });
+  destCount.textContent = list.length + ' of ' + destinations.length + ' destinations';
+}
+fillDestinations('');
+destBox.addEventListener('input', () => fillDestinations(destBox.value, destSelect.value));
+
+/* ---------- Keep form values after the POST reload ---------- */
+const form = $('fareForm'), btn = $('submitBtn'), err = $('err');
+const KEY = 'wf-form';
+function saveForm() {
+  const data = {};
+  Array.from(form.elements).forEach(el => {
+    if (!el.name) return;
+    data[el.name] = el.type === 'checkbox' ? el.checked : el.value;
+  });
+  try { sessionStorage.setItem(KEY, JSON.stringify(data)); } catch (e) {}
+}
+function restoreForm() {
+  let data = null;
+  try { data = JSON.parse(sessionStorage.getItem(KEY) || 'null'); } catch (e) {}
+  if (!data) return;
+  Object.keys(data).forEach(name => {
+    const el = form.elements[name];
+    if (!el || name === 'district' || name === 'route_distance_km') return;
+    if (el.type === 'checkbox') el.checked = !!data[name];
+    else el.value = data[name];
+  });
+  if (data.destination_spot) fillDestinations('', data.destination_spot);
+}
+restoreForm();
+syncDistrict();
+
+/* ---------- Real route distance (hidden field) ---------- */
+const ROUND_TRIP = false;  // set true to send there-and-back distance instead of one-way
+const MIN_KM = 1;          // very short hops are never sent as 0 km
+
+// Approximate GPS coordinates [lat, lng] of every pickup hub
+const hubCoords = {
+  Pahalgam_Main_Taxi_Stand: [34.0161, 75.3150],
+  Srinagar_TRC_Tourist_Taxi_Stand: [34.0715, 74.8175],
+  Sonamarg_Forest_Checkpost_Stand: [34.3050, 75.2930],
+  Gulmarg_Main_Market_Stand: [34.0484, 74.3805],
+  Pahalgam_Pony_Stand_KP_Road: [34.0170, 75.3170],
+  Tangmarg_Winter_Terminal: [34.0742, 74.4166],
+  Dal_Lake_Boulevard_Ghat_1_to_16: [34.0900, 74.8350],
+  Gulmarg_Gondola_Base_Bowl: [34.0510, 74.3830],
+  Bandipora_Gurez_Sumo_Stand: [34.4170, 74.6430],
+  Anantnag_Daksum_Taxi_Stand: [33.7311, 75.1487],
+  Sonamarg_Pony_Stand_Meadow: [34.3040, 75.2960],
+  Kongdori_Phase1_Snow_Bowl: [34.0500, 74.3790],
+  Nigeen_Lake_Club_Ghat: [34.1170, 74.8400],
+  Sonamarg_Snow_Bridge_Point: [34.3070, 75.3010],
+  Yusmarg_Main_Bowl_Stand: [33.8350, 74.6670],
+  Doodhpathri_Tangnar_Pony_Stand: [33.8650, 74.5850]
+};
+
+// Approximate coordinates of each destination (matched by name prefix, so all variants share one point)
+const placeCoords = {
+  Apharwat_Foothill_Snowmobile_30Min_Sprint: [34.0300, 74.3730],
+  Aru_Valley_Return_With_1Hr_Halt: [34.0950, 75.2500],
+  Baisaran_Mini_Switzerland_5km_Return: [34.0290, 75.3350],
+  Baisaran_Plus_Dabiyan_Kashmir_Valley_Point: [34.0330, 75.3400],
+  Baltal_And_Sarbal_Last_Village_Return: [34.2750, 75.4100],
+  Betaab_Valley_Return_With_1Hr_Halt: [34.0550, 75.3900],
+  Botapathri_Ningli_Nallah_Meadow_Return: [34.0100, 75.2900],
+  Chandanwari_Glacier_Point_Return: [34.0830, 75.4600],
+  Char_Chinar_Meena_Bazaar_Floating_Gardens_Cruise: [34.1140, 74.8420],
+  Drung_Frozen_Waterfall_Return_Trip: [34.0700, 74.3950],
+  Full_ABC_Circuit_Aru_Betaab_Chandanwari: [34.0830, 75.4600],
+  Gondola_Gate_And_Phase1_Snow_Sledge_Circuit: [34.0500, 74.3790],
+  Gulmarg_Golf_Course_30Min_ATV_Trail: [34.0470, 74.3860],
+  Gulmarg_Gondola_Base_Return_Snow_Transfer: [34.0510, 74.3830],
+  Khilanmarg_Viewpoint_Pony_Roundtrip: [34.0380, 74.3680],
+  Maharaja_Palace_Childrens_Park_St_Marys_Loop: [34.0495, 74.3790],
+  Nehru_Park_Golden_Lake_1Hr_Standard_Loop: [34.0960, 74.8400],
+  Nilnag_Lake_And_Doodhganga_Pony_Circuit: [33.8450, 74.6600],
+  Pokhribal_Badamwari_Nigeen_Heritage_Waterway: [34.1180, 74.8400],
+  Razdan_Pass_To_Dawar_Habba_Khatoon_Transfer: [34.6300, 74.8000],
+  Shaliganga_Diskhal_Meadow_Pony_Loop: [33.8600, 74.5750],
+  Sinthan_Top_3800m_Snow_Pass_Return: [33.5400, 75.3800],
+  Srinagar_Mughal_Gardens_Shankaracharya_Full_Day: [34.1100, 74.8750],
+  Srinagar_To_Doodhpathri_Pine_Bowl_Day_Return: [33.8650, 74.5850],
+  Srinagar_To_Pahalgam_Day_Return_Transfer: [34.0161, 75.3150],
+  Srinagar_To_Sonamarg_Day_Return_Intercity: [34.3000, 75.2950],
+  Thajiwas_Glacier_Base_Pony_Roundtrip: [34.3150, 75.3200],
+  Thajiwas_Glacier_Snow_Sledge_Roundtrip: [34.3150, 75.3200],
+  Tulian_Alpine_Lake_16km_Expedition: [34.0900, 75.3900],
+  Zero_Point_Zojila_Pass_Return_Expedition: [34.3070, 75.4700]
+};
+const placeKeys = Object.keys(placeCoords).sort((a, b) => b.length - a.length);
+const coordsFor = v => { const k = placeKeys.find(k => v.startsWith(k)); return k ? placeCoords[k] : null; };
+
+const distInput = $('route_distance_km');
+const distCache = {};
+
+function haversineKm(a, b) {
+  const R = 6371, rad = x => x * Math.PI / 180;
+  const dLat = rad(b[0] - a[0]), dLng = rad(b[1] - a[1]);
+  const h = Math.sin(dLat / 2) ** 2 + Math.cos(rad(a[0])) * Math.cos(rad(b[0])) * Math.sin(dLng / 2) ** 2;
+  return 2 * R * Math.asin(Math.sqrt(h));
+}
+
+// Real driving distance from the OSRM routing service
+async function roadKm(a, b) {
+  const url = 'https://router.project-osrm.org/route/v1/driving/' +
+    a[1] + ',' + a[0] + ';' + b[1] + ',' + b[0] + '?overview=false';
+  const ctl = new AbortController();
+  const timer = setTimeout(() => ctl.abort(), 7000);
+  try {
+    const res = await fetch(url, { signal: ctl.signal });
+    const j = await res.json();
+    if (j.code === 'Ok' && j.routes && j.routes[0]) return j.routes[0].distance / 1000;
+  } catch (e) { /* fall back below */ }
+  finally { clearTimeout(timer); }
+  return null;
+}
+
+async function computeDistance() {
+  const h = hubSelect.value, d = destSelect.value, key = h + '|' + d;
+  if (distCache[key] != null) return distCache[key];
+  const a = hubCoords[h], b = coordsFor(d);
+  if (!a || !b) return null;
+  let km = await roadKm(a, b);
+  if (km == null) km = haversineKm(a, b) * 1.4;   // offline fallback: straight line x mountain-road factor
+  km = Math.max(MIN_KM, km);
+  if (ROUND_TRIP) km *= 2;
+  km = Math.round(km * 10) / 10;
+  distCache[key] = km;
+  return km;
+}
+
+async function updateDistance() {
+  const key = hubSelect.value + '|' + destSelect.value;
+  const km = await computeDistance();
+  if (km != null) { distInput.value = km; distInput.dataset.key = key; }
+  else { distInput.value = ''; distInput.dataset.key = ''; }
+  return km;
+}
+hubSelect.addEventListener('change', updateDistance);
+destSelect.addEventListener('change', updateDistance);
+updateDistance();
+
+form.addEventListener('submit', async e => {
+  syncDistrict();
   err.style.display = 'none';
+  const key = hubSelect.value + '|' + destSelect.value;
+  const ready = distInput.value && distInput.dataset.key === key;
   btn.disabled = true;
-  btn.textContent = 'Calculating…';
+  btn.textContent = 'Calculating route…';
+
+  if (ready) { saveForm(); return; }   // normal submit, distance already set
+
+  e.preventDefault();                  // wait for the distance, then submit
+  const km = await updateDistance();
+  if (km == null) {
+    err.textContent = 'Is route ki distance calculate nahi ho paayi. Koi aur destination chuno.';
+    err.style.display = 'block';
+    btn.disabled = false;
+    btn.textContent = 'Fare Check Karo →';
+    return;
+  }
+  saveForm();
+  form.submit();
+});
+$('resetBtn').addEventListener('click', () => {
+  try { sessionStorage.removeItem(KEY); } catch (e) {}
+  window.location.href = window.location.pathname;
 });
 
-// Display Flask prediction after the normal POST request reloads the page.
+/* ---------- Result display ---------- */
+function countUp(el, target) {
+  const start = performance.now(), dur = 800;
+  (function tick(now) {
+    const p = Math.min(1, (now - start) / dur);
+    el.textContent = inr(target * (1 - Math.pow(1 - p, 3)));
+    if (p < 1) requestAnimationFrame(tick);
+  })(start);
+}
+
 (function showResult() {
-  const getText = id => document.getElementById(id).textContent.trim();
+  const getText = id => $(id).textContent.trim();
   const errorText = getText('server-error');
   const fairText = getText('server-fair');
 
-  if (errorText) {
+  if (errorText && errorText !== 'None') {
     err.textContent = 'Prediction fail hui: ' + errorText;
     err.style.display = 'block';
     return;
   }
-
   if (!fairText || fairText === 'None') return;
 
   const fair = Number(fairText);
@@ -515,53 +742,53 @@ form.addEventListener('submit', () => {
   const pp = Number(getText('server-person'));
   const label = getText('server-label');
 
-  document.getElementById('placeholder').style.display = 'none';
-  document.getElementById('verdict').style.display = 'block';
-  document.getElementById('rFair').textContent = inr(fair);
-  document.getElementById('rMax').textContent = inr(max);
-  document.getElementById('rQuote').textContent = inr(quote);
-  document.getElementById('rPP').textContent = inr(pp);
+  $('placeholder').style.display = 'none';
+  $('verdict').style.display = 'block';
+  countUp($('rFair'), fair);
+  countUp($('rMax'), max);
+  countUp($('rQuote'), quote);
+  countUp($('rPP'), pp);
 
   const lower = label.toLowerCase();
-  const badge = document.getElementById('badge');
   let cls = 'warn', icon = '⚠️';
+  if (/(^|\b)(fair|reasonable|ok|good|cheap)/.test(lower) && !/un|over/.test(lower)) { cls = 'good'; icon = '✅'; }
+  else if (/(over|high|unfair|rip|scam|expens|trap)/.test(lower)) { cls = 'bad'; icon = '🚩'; }
 
-  if (/(^|\b)(fair|reasonable|ok|good|cheap)/.test(lower) && !/un|over/.test(lower)) {
-    cls = 'good';
-    icon = '✅';
-  } else if (/(over|high|unfair|rip|scam|expens|trap)/.test(lower)) {
-    cls = 'bad';
-    icon = '🚩';
-  }
-
+  const badge = $('badge');
   badge.className = 'badge ' + cls;
   badge.textContent = icon + ' ' + label;
 
-  const low = fair * 0.6;
-  const high = max * 1.3;
-  let pct = high > low ? ((quote - low) / (high - low)) * 100 : 50;
-  pct = Math.max(1, Math.min(98, pct));
-  document.getElementById('pin').style.left = pct + '%';
-})();
+  // How far the quote is from the fair price
+  const delta = quote - fair;
+  const pct = fair > 0 ? Math.abs(delta / fair * 100) : 0;
+  const diff = $('diff');
+  diff.className = 'diff ' + cls;
+  diff.textContent = delta > 0
+    ? inr(delta) + ' (' + pct.toFixed(0) + '%) fair price se zyada'
+    : delta < 0
+      ? inr(-delta) + ' (' + pct.toFixed(0) + '%) fair price se kam'
+      : 'Bilkul fair price par';
 
-// Search filter for the destination dropdown.
-(function(){
-  const sel = document.getElementById('destination_spot');
-  const box = document.getElementById('destSearch');
-  const all = Array.from(sel.options).map(o => ({v:o.value, t:o.textContent}));
+  const advice = {
+    good: 'Quote fair lag raha hai. Aap confidently book kar sakte ho.',
+    warn: 'Thoda zyada hai. Negotiate karo aur ' + inr(max) + ' se neeche rakhne ki koshish karo.',
+    bad: 'Quote kaafi zyada hai. Union rate-card maango, prepaid booth try karo, ya ' + inr(fair) + ' ke aas-paas se baat shuru karo.'
+  };
+  $('advice').textContent = advice[cls];
 
-  box.addEventListener('input', () => {
-    const q = box.value.trim().toLowerCase().replace(/_/g,' ');
-    const cur = sel.value;
-    sel.innerHTML = '';
+  // Meter pin
+  const low = fair * 0.6, high = max * 1.3;
+  let p = high > low ? ((quote - low) / (high - low)) * 100 : 50;
+  p = Math.max(1, Math.min(98, p));
+  requestAnimationFrame(() => { $('pin').style.left = p + '%'; });
 
-    all.filter(o => !q || o.t.toLowerCase().includes(q)).forEach(o => {
-      const op = document.createElement('option');
-      op.value = o.v;
-      op.textContent = o.t;
-      if (o.v === cur) op.selected = true;
-      sel.appendChild(op);
-    });
+  // WhatsApp share
+  const share = $('shareBtn');
+  share.style.display = 'block';
+  share.addEventListener('click', () => {
+    const text = 'Wadi Fare check: fair price ' + inr(fair) + ', max reasonable ' + inr(max) +
+      ', mera quote ' + inr(quote) + ' (' + label + '). Created by Furqan Mushtaq.';
+    window.open('https://wa.me/?text=' + encodeURIComponent(text), '_blank', 'noopener');
   });
 })();
 </script>
